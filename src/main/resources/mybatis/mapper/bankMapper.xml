@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ev14.drill.dao.BankAccountDao">
+
+<!-- 계좌등록 -->
+	<insert id="accountInsert" parameterType="java.util.HashMap">
+		insert into dealRecord (accountNumber,holderID)
+		values (#{item1},#{item2})
+		 
+	</insert>
+
+	<!-- 목록보기 -->
+	<select id="bankList" resultType="com.ev14.drill.dto.BankRecordDto">
+		select * from dealRecord order by num desc
+	</select>
+	
+	<!-- 계좌검색 -->
+	<select id="bankSearch" resultType="com.ev14.drill.dto.BankRecordDto">
+		select * from dealRecord where accountNumber = #{param1}
+	</select>
+	
+	<!-- 입금처리 -->
+	<update id="bankDeposit" >
+		update dealRecord set drawalAmount = '0' , 
+		depositAmount = #{item2}, balance = #{item3}  where accountNumber = #{item1};
+	</update>
+	<!-- 출금처리 -->
+	<update id="bankdrawal" >
+		update dealRecord set depositAmount = '0', 
+		drawalAmount = #{item2}, balance = #{item3}  where accountNumber = #{item1};
+	</update>
+	<!-- 글상세보기 -->
+	<select id="bankResult" resultType="com.ev14.drill.dto.BankRecordDto">
+		select * from dealRecord where num = #{param1}
+	</select>
+	<!-- 메모수정하기 -->
+	<update id="bankModify">
+		UPDATE dealRecord SET memo = #{param1} WHERE num = #{param2}
+	</update>
+	
+
+</mapper>
